@@ -1,4 +1,16 @@
 services:
+  wordpress:
+    container_name: wordpress
+    build:
+      context: ./requirements/wordpress
+      dockerfile: Dockerfile.wordpress
+    volumes:
+      - wordpress_data:/var/www/html
+    restart: always
+    networks:
+      inception_network:
+        ipv4_address: 172.25.0.10
+  
   nginx:
     container_name: nginx
     build:
@@ -6,11 +18,24 @@ services:
       dockerfile: Dockerfile.nginx
     ports:
       - "443:443"
+    depends_on:
+      - wordpress
+    volumes:
+      - wordpress_data:/var/www/html
     restart: always
     networks:
-      - inception_network
+      inception_network:
+        ipv4_address: 172.25.0.20
+
+
+volumes:
+  wordpress_data:
+
 
 
 networks:
   inception_network:
     driver: bridge
+    ipam:
+        config:
+          - subnet: 172.25.0.0/16

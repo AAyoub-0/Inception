@@ -1,0 +1,18 @@
+FROM alpine:3.19
+
+RUN apk update && apk add --no-cache \
+    php81 php81-fpm php81-mysqli php81-opcache php81-gd php81-mbstring php81-curl \
+    curl unzip shadow
+
+RUN mkdir -p /var/www/html
+
+COPY tools/ /tools/
+
+RUN chmod +x /tools/install_wordpress.sh && /tools/install_wordpress.sh
+
+RUN sed -i 's/;listen.owner = nobody/listen.owner = www-data/' /etc/php81/php-fpm.d/www.conf && \
+    sed -i 's/;listen.group = nobody/listen.group = www-data/' /etc/php81/php-fpm.d/www.conf
+
+EXPOSE 9000
+
+CMD ["php-fpm81", "-F"]
