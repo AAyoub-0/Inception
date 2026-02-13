@@ -1,15 +1,52 @@
 services:
+  mariadb:
+    container_name: mariadb
+    build:
+      context: ./requirements/mariadb
+      dockerfile: Dockerfile.mariadb
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD_FILE: /run/secrets/db_password
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+    networks:
+      inception_network:
+        ipv4_address: 172.25.0.30
+    secrets:
+      - db_password
+      - db_root_password
+
   wordpress:
     container_name: wordpress
     build:
       context: ./requirements/wordpress
       dockerfile: Dockerfile.wordpress
+    depends_on:
+      - mariadb
     volumes:
       - wordpress_data:/var/www/html
     restart: always
+    environment:
+      WORDPRESS_DB_HOST: 172.25.0.30:3306
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD_FILE: /run/secrets/db_password
+
+      WP_ADMIN_USER: ${WP_ADMIN_USER}
+      WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
+      WP_ADMIN_PASSWORD_FILE: /run/secrets/wp_admin_password
+
+      WP_USER_USER: ${WP_USER_USER}
+      WP_USER_EMAIL: ${WP_USER_EMAIL}
     networks:
       inception_network:
         ipv4_address: 172.25.0.10
+    secrets:
+      - db_password
+      - db_root_password
+      - wp_admin_password
   
   nginx:
     container_name: nginx
@@ -28,9 +65,28 @@ services:
         ipv4_address: 172.25.0.20
 
 
-volumes:
-  wordpress_data:
+secrets:
+  db_password:
+    file: ../secrets/db_password.txt
+  db_root_password:
+    file: ../secrets/db_root_password.txt
+  wp_admin_password:
+    file: ../secrets/wp_admin_password.txt
 
+
+volumes:
+  mariadb_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/aayoub/data/mariadb
+  wordpress_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/aayoub/data/wordpress
 
 
 networks:
