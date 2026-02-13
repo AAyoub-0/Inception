@@ -2,7 +2,12 @@ FROM alpine:3.19
 
 RUN apk update && apk add --no-cache \
     php81 php81-fpm php81-mysqli php81-opcache php81-gd php81-mbstring php81-curl \
-    curl unzip shadow mariadb-client
+    curl unzip shadow mariadb-client iputils
+
+RUN ln -s /usr/bin/php81 /usr/bin/php
+
+RUN curl -o /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+    && chmod +x /usr/local/bin/wp
 
 RUN mkdir -p /var/www/html
 

@@ -1,13 +1,23 @@
 #!/bin/sh
 
+echo "HELLO"
+
 set -e
 
+echo "WORLD"
+
+until mysql -h"$WORDPRESS_DB_HOST" \
+            -u"$WORDPRESS_DB_USER" \
+            -p"$(cat $WORDPRESS_DB_PASSWORD_FILE)" \
+            -e "SELECT 1" >/dev/null 2>&1
+do
+    echo "Waiting for MariaDB..."
+    sleep 2
+done
+
+echo "MariaDB is ready!"
+
 WP_PATH=/var/www/html
-
-echo "Waiting for MariaDB..."
-sleep 10
-
-echo "MariaDB is up!"
 
 if [ ! -f "$WP_PATH/wp-config.php" ]; then
   echo "Installing WordPress..."
