@@ -36,9 +36,19 @@ if [ ! -f "$WP_PATH/wp-config.php" ]; then
     --dbhost="$WORDPRESS_DB_HOST" \
     --allow-root
 
+  wp option update home \
+    "https://$DOMAIN_NAME" \
+    --allow-root \
+    --path="$WP_PATH"
+
+  wp option update siteurl \
+    "https://$DOMAIN_NAME" \
+    --allow-root \
+    --path="$WP_PATH"
+
   wp core install \
     --path="$WP_PATH" \
-    --url="https://$DOMAIN_NAME" \
+    --url="$DOMAIN_NAME" \
     --title="Inception" \
     --admin_user="$WP_ADMIN_USER" \
     --admin_password="$(cat $WP_ADMIN_PASSWORD_FILE)" \
