@@ -10,7 +10,11 @@ all:
 down:
 	$(COMPOSE) down
 
-clean:
+down-v:
+	$(COMPOSE) down -v
+
+clean: down-v
+	sudo rm -rf /home/aboumall/data/wordpress/* /home/aboumall/data/mariadb/*
 	docker system prune -af
 
 re: down all
