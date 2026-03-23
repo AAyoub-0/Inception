@@ -1,11 +1,5 @@
 #!/bin/sh
 
-echo "HELLO"
-
-set -e
-
-echo "WORLD"
-
 until mysql -h"$WORDPRESS_DB_HOST" \
             -u"$WORDPRESS_DB_USER" \
             -p"$(cat $WORDPRESS_DB_PASSWORD_FILE)" \
@@ -22,7 +16,9 @@ WP_PATH=/var/www/html
 if [ ! -f "$WP_PATH/wp-config.php" ]; then
   echo "Installing WordPress..."
 
-  wp core download --path="$WP_PATH" --allow-root
+  wp core download \
+    --path="$WP_PATH" \
+    --allow-root
 
   echo "WordPress downloaded."
 
@@ -36,6 +32,15 @@ if [ ! -f "$WP_PATH/wp-config.php" ]; then
     --dbhost="$WORDPRESS_DB_HOST" \
     --allow-root
 
+    wp core install \
+    --path="$WP_PATH" \
+    --url="$DOMAIN_NAME" \
+    --title="Inception" \
+    --admin_user="$WP_ADMIN_USER" \
+    --admin_password="$(cat $WP_ADMIN_PASSWORD_FILE)" \
+    --admin_email="$WP_ADMIN_EMAIL" \
+    --allow-root
+
   wp option update home \
     "https://$DOMAIN_NAME" \
     --allow-root \
@@ -46,15 +51,6 @@ if [ ! -f "$WP_PATH/wp-config.php" ]; then
     --allow-root \
     --path="$WP_PATH"
 
-  wp core install \
-    --path="$WP_PATH" \
-    --url="$DOMAIN_NAME" \
-    --title="Inception" \
-    --admin_user="$WP_ADMIN_USER" \
-    --admin_password="$(cat $WP_ADMIN_PASSWORD_FILE)" \
-    --admin_email="$WP_ADMIN_EMAIL" \
-    --allow-root
-
   wp user create \
     "$WP_USER_USER" \
     "$WP_USER_EMAIL" \
@@ -62,7 +58,9 @@ if [ ! -f "$WP_PATH/wp-config.php" ]; then
     --user_pass="$(cat $WP_USER_PASSWORD_FILE)" \
     --path="$WP_PATH" \
     --allow-root
+
+  echo "WordPress installed and configured."
 fi
 
-echo "Starting PHP-FPM..."
-exec php-fpm81 -F
+echo "Starting php-fpm..."
+exec "$@"

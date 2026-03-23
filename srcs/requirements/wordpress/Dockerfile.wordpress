@@ -19,9 +19,12 @@ COPY tools/ /tools/
 
 RUN chmod +x /tools/install_wordpress.sh
 
+
 COPY conf/www.conf /etc/php81/php-fpm.d/www.conf
 COPY conf/php.ini /etc/php81/php.ini
 
+ENTRYPOINT [ "/tools/install_wordpress.sh" ]
+
 EXPOSE 9000
 
-CMD ["/tools/install_wordpress.sh"]
+CMD ["php-fpm", "-F"]
