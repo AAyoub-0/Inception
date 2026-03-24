@@ -6,6 +6,7 @@ USER=mysql
 
 DB_ROOT_PASSWORD=$(cat /run/secrets/db_root_password)
 DB_USER_PASSWORD=$(cat /run/secrets/db_password)
+DB_SUP_USER_PASSWORD=$(cat /run/secrets/db_sup_password)
 
 mkdir -p /run/mysqld
 chown -R mysql:mysql /run/mysqld
@@ -29,7 +30,9 @@ if [ ! -d "$DIR_DATA/mysql" ]; then
 ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PASSWORD}';
 CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};
 CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${DB_USER_PASSWORD}';
-GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%';
+CREATE USER IF NOT EXISTS '${MYSQL_SUP_USER}'@'%' IDENTIFIED BY '${DB_SUP_USER_PASSWORD}';
+GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_SUP_USER}'@'%';
 FLUSH PRIVILEGES;
 EOSQL
 
