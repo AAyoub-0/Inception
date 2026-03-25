@@ -34,8 +34,8 @@ services:
     environment:
       WORDPRESS_DB_HOST: mariadb
       WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
-      WORDPRESS_DB_USER: ${MYSQL_USER}
-      WORDPRESS_DB_PASSWORD_FILE: /run/secrets/db_password
+      WORDPRESS_DB_USER: ${MYSQL_SUP_USER}
+      WORDPRESS_DB_PASSWORD_FILE: /run/secrets/db_sup_password
 
       WP_ADMIN_USER: ${WP_ADMIN_USER}
       WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
@@ -49,9 +49,9 @@ services:
       inception_network:
         ipv4_address: 172.25.0.10
     secrets:
-      - db_password
       - db_root_password
       - wp_admin_password
+      - db_sup_password
   
   nginx:
     container_name: nginx
