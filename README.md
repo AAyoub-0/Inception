@@ -56,7 +56,7 @@ This one does 'make down' and 'make'.
 Before you run the containers you also need to make sure you have this pre requists :
 
 - The directories for volumes '/home/login/data/wordpress' and '/home/login/data/mariadb', if they don't exist create them.
-- The secrets directory and the secrets files, if yopu don't have it create it, as well as the secret files. You may chose the passwords of your choice. The files must be :
+- The secrets directory and the secrets files, if you don't have it create it, as well as the secret files. You may chose the passwords of your choice. The files must be :
     - `secrets/db_password.txt`
     - `secrets/db_sup_password.txt`
     - `secrets/db_root_password.txt`
