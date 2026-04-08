@@ -137,6 +137,15 @@ Bind mounts allow you to mount a file or directory from the host filesystem dire
 - Use **volumes** for persistent, portable, and Docker-managed data.  
 - Use **bind mounts** for development, direct host access, or when you need full control over file locations.
 
+---
+
+**Sources**:
+
+- Amazon web service: https://aws.amazon.com/fr/compare/the-difference-between-docker-vm/
+
+- Docker web site: https://www.docker.com/resources/what-container/
+
+
 
 
 
