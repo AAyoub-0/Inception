@@ -16,7 +16,7 @@ You must include a .env file, an example is present in the Git repository ".env.
 You may fill the environment variables, just note that the project wont run if the wordpess admin username contains "admin/Admin" or "admin-
 istrator/Administrator". Also the environment variables must keep their originale names which are : `DOMAIN_NAME` `MYSQL_DATABASE` `MYSQL_USER` `MYSQL_SUP_USER` `WP_ADMIN_EMAIL` `WP_USER` and `WP_USER_EMAIL`.
 
-## Start and stop the project
+## Start and stop the project with the Makefile
 
 The project is built by a docker-compose and uses a Makefile to run everything needed.
 Here is the commands to run and stop the project.
@@ -42,3 +42,86 @@ make clean
 ```
 This command runs "make down -v", and then delete all the data inside the "user/data/mariadb" and "user/data/wordpress", and finally runs "docker system prune -af"
 to make sure all images are deleted. This is used in case of bugs that can be due to volumes.
+
+## Start and stop the project with docker-compose
+
+You can also run this project using docker-compose directly. It is good if you want to debug.
+
+If you want to build and run all containers:
+```shell
+$ cd srcs
+$ docker compose up --build -d
+```
+The "-d" is to run it in detach mode so it doesn't use the terminal.
+
+Use this command to stop containers:
+```shell
+$ docker compose down
+$ docker compose down -v
+```
+
+If you stopped the containers yu can start them back with: 
+```shell
+$ docker compose start
+```
+
+## Debugging
+
+### Containers
+
+Use these commands if you want to manage containers.
+These commands must be executed in srcs if you want to use "docker compose".
+
+```sh
+$ cd srcs
+$ docker compose ps
+```
+List the containers and their state.
+
+```sh
+$ docker compose logs
+$ docker compose logs -f
+$ docker compose logs service_name
+```
+Shows the logs of docker compose or the specified service.
+The "-f" follows the logs in real time.
+
+```sh
+$ docker images
+```
+List all images.
+
+```sh
+$ docker network ls
+$ docker network inspect network_name
+```
+List docker networks, and inspect the specified network.
+
+```sh
+$ docker compose exec nginx bash
+```
+Execute a service with a custom entrypoint, this is mainly used to debug containers and enter inside, the "bash" can be replaced by any program.
+
+### Volumes
+
+Use these commands if you want to manage volumes.
+
+```sh
+$ docker volume ls
+```
+List the volumes.
+
+```sh
+$ docker volume inspect volume_name
+```
+Inspect a volume.
+
+```sh
+$ docker volume prune
+```
+Deletes all unused volumes.
+
+## Perstistant data
+
+The data persist due to docker named volumes, this type of volumes are directly handled by docker. There is a volume for database and wordpress. You can find the data in the following directories: "home/login/data/mariadb" and "home/login/data/wordpress" on the host machine.
+
