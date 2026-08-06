@@ -36,7 +36,7 @@ if [ ! -f "$WP_PATH/wp-config.php" ]; then
     --path="$WP_PATH" \
     --url="$DOMAIN_NAME" \
     --title="Inception" \
-    --admin_user="$WP_ADMIN_USER" \
+    --admin_user="$WP_ADMIN" \
     --admin_password="$(cat $WP_ADMIN_PASSWORD_FILE)" \
     --admin_email="$WP_ADMIN_EMAIL" \
     --allow-root
@@ -52,7 +52,7 @@ if [ ! -f "$WP_PATH/wp-config.php" ]; then
     --path="$WP_PATH"
 
   wp user create \
-    "$WP_USER_USER" \
+    "$WP_USER" \
     "$WP_USER_EMAIL" \
     --role=author \
     --user_pass="$(cat $WP_USER_PASSWORD_FILE)" \
