@@ -3,18 +3,17 @@
 Make sure you have all these prerequistes before running the project.
 
 - Secrets  
-A "secrets" directory must be present in the root of the project, the "make" command creates it but u can do it yourself. If you use "make" to create it u must fill the secrets files.
+A "secrets" directory must be present in the root of the project. The "make" command creates it automatically, but by default it only creates empty secret files.
 
 
 - Secrets files and passwords  
 In the "secrets" directory must be 4 files with the following names: `db_password.txt` `db_root_password.txt` `db_sup_password.txt` and `wp_admin_password.txt`.
-The project wont run if the passwords are empty or password too shorts, passwords must be at least 8 characters.
+The project wont run if the passwords are empty or password too shorts, passwords must be at least 8 characters. You can generate them with `make password-gen` after the files are created.
 
 
 - env file  
 You must include a .env file, an example is present in the Git repository ".env.example" just change the name to ".env", this file must be in "srcs" directory.
-You may fill the environment variables, just note that the project wont run if the wordpess admin username contains "admin/Admin" or "admin-
-istrator/Administrator". Also the environment variables must keep their originale names which are : `DOMAIN_NAME` `MYSQL_DATABASE` `MYSQL_USER` `MYSQL_SUP_USER` `WP_ADMIN_EMAIL` `WP_USER` and `WP_USER_EMAIL`.
+You may fill the environment variables, just note that the project wont run if the wordpress admin username contains `admin` or `administrator`, regardless of uppercase or lowercase. Also the environment variables must keep their originale names which are : `DOMAIN_NAME` `MYSQL_DATABASE` `MYSQL_USER` `MYSQL_SUP_USER` `WP_ADMIN` `WP_ADMIN_EMAIL` `WP_USER` and `WP_USER_EMAIL`.
 
 ## Start and stop the project with the Makefile
 
@@ -24,7 +23,22 @@ Here is the commands to run and stop the project.
 ```shell
 make
 ```
-This command runs everything, creating the secrets files and checking that the configuration files are good, building the images with the docker-compose and running the containers.
+This command runs everything in order: it creates the secrets files, validates the secrets, validates the `.env` file, then builds the images with docker-compose and runs the containers. If one validation fails, nothing is built.
+
+```shell
+make password-gen
+```
+This command generates passwords inside the existing secret files. It only works if the 4 secret files already exist, and it does not overwrite files that already contain a password.
+
+```shell
+make validate-secrets
+```
+This command checks that all secret files exist, are not empty, and contain at least 8 characters.
+
+```shell
+make validate-env
+```
+This command checks that `srcs/.env` exists, that it contains the same variable names as `srcs/.env.example`, and that `WP_ADMIN` does not contain `admin` or `administrator`.
 
 ```shell
 make down

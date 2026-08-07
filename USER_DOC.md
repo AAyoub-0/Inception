@@ -14,7 +14,22 @@ Here is the commands to run and stop the project.
 ```shell
 make
 ```
-This command runs everything, creating the secrets files and checking that the configuration files are good, building the images with the docker-compose and running the containers.
+This command runs everything, creating the secrets files, checking the secrets files, checking the `.env` file, building the images with docker-compose and running the containers. If the secrets files or the env file are not valid the containers wont start.
+
+```shell
+make password-gen
+```
+This command generates passwords inside the secret files created by `make secrets`. It does not overwrite files that already contain a password.
+
+```shell
+make validate-secrets
+```
+This command checks that the 4 secret files exist, are not empty, and have passwords with at least 8 characters.
+
+```shell
+make validate-env
+```
+This command checks that `srcs/.env` exists, that it contains all required environment variable names from `srcs/.env.example`, and that `WP_ADMIN` does not contain `admin` or `administrator`.
 
 ```shell
 make down
