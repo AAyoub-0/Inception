@@ -6,6 +6,7 @@ services:
       dockerfile: Dockerfile.mariadb
     volumes:
       - mariadb_data:/var/lib/mysql
+    restart: always
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
@@ -52,6 +53,7 @@ services:
     secrets:
       - db_root_password
       - wp_admin_password
+      - wp_user_password
       - db_sup_password
   
   nginx:
