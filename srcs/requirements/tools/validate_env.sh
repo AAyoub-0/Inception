@@ -7,17 +7,16 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 ENV_FILE="$PROJECT_ROOT/srcs/.env"
 ENV_EXAMPLE_FILE="$PROJECT_ROOT/srcs/.env.example"
 
-extract_env_names() {
-  local file_path="$1"
-
-  grep -E '^[A-Za-z_][A-Za-z0-9_]*=' "$file_path" | cut -d '=' -f 1
-}
-
-extract_env_value() {
-  local env_name="$1"
-
-  grep -E "^${env_name}=" "$ENV_FILE" | head -n 1 | cut -d '=' -f 2-
-}
+ENV_NAMES=(
+  "DOMAIN_NAME"
+  "MYSQL_DATABASE"
+  "MYSQL_USER"
+  "MYSQL_SUP_USER"
+  "WP_ADMIN"
+  "WP_ADMIN_EMAIL"
+  "WP_USER"
+  "WP_USER_EMAIL"
+)
 
 validate_wp_admin() {
   local wp_admin_value
@@ -46,7 +45,7 @@ while IFS= read -r env_name; do
     echo "Error: missing variable $env_name in $ENV_FILE"
     status=1
   fi
-done < <(extract_env_names "$ENV_EXAMPLE_FILE")
+done < <(printf '%s\n' "${ENV_NAMES[@]}")
 
 if grep -Eq '^WP_ADMIN=' "$ENV_FILE"; then
   if ! validate_wp_admin; then
