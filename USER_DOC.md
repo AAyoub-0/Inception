@@ -17,6 +17,11 @@ make
 This command runs everything, creating the secrets files, checking the secrets files, checking the `.env` file, building the images with docker-compose and running the containers. If the secrets files or the env file are not valid the containers wont start.
 
 ```shell
+make up
+```
+This command starts existing containers in detached mode without forcing a rebuild. Use it after `make down` when no image or Dockerfile change was made.
+
+```shell
 make password-gen
 ```
 This command generates passwords inside the secret files created by `make secrets`. It does not overwrite files that already contain a password.

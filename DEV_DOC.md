@@ -26,6 +26,11 @@ make
 This command runs everything in order: it creates the secrets files, validates the secrets, validates the `.env` file, then builds the images with docker-compose and runs the containers. If one validation fails, nothing is built.
 
 ```shell
+make up
+```
+This command starts the stack in detached mode without `--build`. Use it for fast restart after `make down` if build context did not change.
+
+```shell
 make password-gen
 ```
 This command generates passwords inside the existing secret files. It only works if the 4 secret files already exist, and it does not overwrite files that already contain a password.

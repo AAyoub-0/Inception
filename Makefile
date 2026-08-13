@@ -13,6 +13,9 @@ COMPOSE = docker compose -f $(COMPOSE_FILE)
 all: volumes secrets validate-secrets validate-env
 	$(COMPOSE) up --build -d
 
+up: validate-secrets validate-env
+	$(COMPOSE) up -d
+
 volumes:
 	sudo mkdir -p $(MARIADB_VOLUME_DIR) $(WORDPRESS_VOLUME_DIR)
 
@@ -35,9 +38,9 @@ down-v:
 	$(COMPOSE) down -v
 
 clean: down-v
-	sudo rm -rf $(WORDPRESS_VOLUME_DIR)/* $(MARIADB_VOLUME_DIR)/*
+	sudo rm -rf $(WORDPRESS_VOLUME_DIR)/ $(MARIADB_VOLUME_DIR)/
 	docker system prune -af
 
 re: down all
 
-.PHONY: all volumes secrets password-gen validate-secrets validate-env down down-v clean re
+.PHONY: all up volumes secrets password-gen validate-secrets validate-env down down-v clean re
