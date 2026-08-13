@@ -32,11 +32,6 @@ validate_wp_admin() {
   echo "OK: WP_ADMIN value"
 }
 
-if [[ ! -f "$ENV_EXAMPLE_FILE" ]]; then
-  echo "Error: missing file $ENV_EXAMPLE_FILE"
-  exit 1
-fi
-
 if [[ ! -f "$ENV_FILE" ]]; then
   echo "Error: missing file $ENV_FILE"
   exit 1

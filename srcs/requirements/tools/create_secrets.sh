@@ -16,6 +16,7 @@ SECRETS_FILES=(
   "db_sup_password.txt"
   "db_root_password.txt"
   "wp_admin_password.txt"
+  "wp_user_password.txt"
 )
 
 mkdir -p "$SECRETS_DIR"
