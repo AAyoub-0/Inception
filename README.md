@@ -67,7 +67,8 @@ Of course 'login' must be replaced by the student login.
 
 ## Ressources
 
-I mainly used the docker documentation website for ressources. As well as chatGpt for wordpress or mariadb installation commands.
+I mainly used the docker documentation website for ressources.
+AI was used for the bash script, as well as for docker documentation.
 
 ## Project description (Docker)
 
