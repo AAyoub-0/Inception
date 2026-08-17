@@ -42,4 +42,4 @@ EOSQL
 fi
 
 echo "Starting MariaDB in foreground..."
-exec mysqld --user=$USER --datadir=$DIR_DATA
+exec "$@"

@@ -10,3 +10,5 @@ RUN chmod +x /tools/init_db.sh
 EXPOSE 3306
 
 ENTRYPOINT ["/tools/init_db.sh"]
+
+CMD ["mysqld", "--user=mysql", "--datadir=/var/lib/mysql"]
